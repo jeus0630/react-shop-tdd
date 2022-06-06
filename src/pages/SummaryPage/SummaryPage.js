@@ -3,7 +3,7 @@ import { useState } from "react"
 const SummaryPage = () => {
 
     const [checked, setChecked] = useState(false);
-
+    
     return (
         <div>
             <h1>주문 확인</h1>
