@@ -13,5 +13,5 @@ export const getUsers = async (orderType) => {
 };
 
 export const useGetUsersData = (orderType) => {
-  return useQuery("user", () => getUsers(orderType));
+  return useQuery("user", () => getUsers(orderType),{retry: 0});
 };

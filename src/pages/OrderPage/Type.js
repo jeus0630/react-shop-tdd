@@ -4,7 +4,7 @@ import Products from "./Products";
 const Type = ({orderType}) => {
 
     const {isLoading, isError, data} = useGetUsersData(orderType);
-    console.log(data);
+    console.log(isError);
     const ItemComponent = orderType === "products" ? Products : null;
 
     if(isLoading){
@@ -18,7 +18,7 @@ const Type = ({orderType}) => {
     if(isError){
         return(
             <div>
-                isError...
+                error
             </div>
         )
     }
