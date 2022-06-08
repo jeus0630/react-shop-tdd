@@ -3,7 +3,7 @@ import {rest} from 'msw';
 export const handlers = [
     rest.get('http://localhost:5000/products',(req,res,ctx) => {
         return res(
-            ctx.status(500),
+            ctx.status(200),
             ctx.json([
                 {
                     "name": "America",

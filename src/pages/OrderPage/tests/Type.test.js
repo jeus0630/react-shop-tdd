@@ -1,4 +1,4 @@
-import {render, screen, waitFor} from "@testing-library/react";
+import {findByText, render, screen, waitFor} from "@testing-library/react";
 import { rest } from "msw";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { server } from "../../../mocks/server";
@@ -14,18 +14,20 @@ describe("<Type/>",() => {
     it("display product images from server", async () => {
         renderType();
 
+        expect(screen.getByText(/isLoading/i)).toBeInTheDocument();
+
         const productsImages = await screen.findAllByRole("img",{
             name: /product$/i
         })
 
-        expect(productsImages).toHaveLength(2);
+        const americaProduct = await screen.findByRole("img",{name:/America product/i});
+        const englandProduct = await screen.findByRole("img",{name:/England product/i});
 
-        const altText = productsImages.map(el => el.altText);
-        expect(altText).toEqual(['America product','England product']);
+        expect(americaProduct).toBeInTheDocument('America product'); 
+        expect(englandProduct).toBeInTheDocument('England product');
     })
 
-    it.only("should render error when response is not success", async () => {
-        renderType();
+    it("should render error when response is not success", async () => {
 
         server.use(
             rest.get('http://localhost:5000/products', (req,res,ctx) => {
@@ -35,13 +37,10 @@ describe("<Type/>",() => {
             })
         )
 
+        renderType();
+
         const loadingText = screen.getByText(/isLoading.../i);
         expect(loadingText).toBeInTheDocument();
-        
-        // await waitFor(() => {
-        //     const errorText = screen.getByText(/error/i);
-        //     expect(errorText).toBeInTheDocument();
-        // })
 
             const errorText = await screen.findByText(/error/i);
             expect(errorText).toBeInTheDocument();
