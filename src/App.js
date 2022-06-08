@@ -1,11 +1,10 @@
-import logo from './logo.svg';
 import './App.css';
-import Type from './pages/OrderPage/Type';
+import OrderPage from './pages/OrderPage/OrderPage';
 
 function App() {
   return (
-    <div>
-      <Type orderType={"products"}></Type>
+    <div style={{padding:"4rem"}}>
+      <OrderPage></OrderPage>
     </div>
   );
 }
