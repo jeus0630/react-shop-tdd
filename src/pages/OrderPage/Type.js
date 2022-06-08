@@ -1,10 +1,11 @@
 import { useGetUsersData } from "../../hooks/useUserData";
+import Options from "./Options";
 import Products from "./Products";
 
 const Type = ({orderType}) => {
 
     const {isLoading, isError, data} = useGetUsersData(orderType);
-    const ItemComponent = orderType === "products" ? Products : null;
+    const ItemComponent = orderType === "products" ? Products : Options;
 
     if(isLoading){
         return (

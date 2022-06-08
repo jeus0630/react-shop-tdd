@@ -5,14 +5,14 @@ import { server } from "../../../mocks/server";
 import Type from "../Type";
 
 describe("<Type/>",() => {
-    const renderType = () => render(
+    const renderType = (param) => render(
         <QueryClientProvider client={new QueryClient()}>
-            <Type orderType="products"></Type>
+            <Type orderType={param}></Type>
         </QueryClientProvider>
     )
 
     it("display product images from server", async () => {
-        renderType();
+        renderType("products");
 
         expect(screen.getByText(/isLoading/i)).toBeInTheDocument();
 
@@ -28,21 +28,28 @@ describe("<Type/>",() => {
     })
 
     it("should render error when response is not success", async () => {
-
+        
         server.use(
             rest.get('http://localhost:5000/products', (req,res,ctx) => {
                 return res.once(
                     ctx.status(500)
-                )
+                    )
             })
         )
-
-        renderType();
+ 
+        renderType("products");
 
         const loadingText = screen.getByText(/isLoading.../i);
         expect(loadingText).toBeInTheDocument();
 
             const errorText = await screen.findByText(/error/i);
             expect(errorText).toBeInTheDocument();
+    })
+
+    it("fetch option information from server", async () => {
+        renderType("options");
+
+        const optionCheckboxes = await screen.findAllByRole("checkbox");
+        expect(optionCheckboxes).toHaveLength(2);
     })
 })
